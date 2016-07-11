@@ -1,0 +1,8 @@
+name = Site Slogan
+description = Overrides the default length of the site's slogan
+core = 7.x
+package = WOOF Features
+version = 7.x-1.0
+project = site_slogan
+features[features_api][] = api:2
+project path = sites/all/modules/features

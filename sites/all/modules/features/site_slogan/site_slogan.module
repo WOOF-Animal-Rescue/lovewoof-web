@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file
+ * Drupal needs this blank file.
+ */
+
+function site_slogan_form_system_site_information_settings_alter(&$form, &$form_state, $form_id) {
+	// override the max length of the site slogan
+	$form['site_information']['site_slogan']['#maxlength'] = 255;
+}

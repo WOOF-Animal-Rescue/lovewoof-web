@@ -1,0 +1,555 @@
+
+/* ---------- Basic Layout Styles ----------- */
+
+html,
+body,
+#page  {
+  height: 100%;
+}
+#page-wrapper {
+  min-height: 100%;
+  min-width: 960px;
+}
+#header div.section,
+#featured div.section,
+#messages div.section,
+#main,
+#triptych,
+#footer-columns,
+#footer {
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#header div.section {
+  position: relative;
+}
+.region-header {
+  float: right; /* LTR */
+  margin: 0 5px 10px;
+}
+.with-secondary-menu .region-header {
+  margin-top: 3em;
+}
+.without-secondary-menu .region-header {
+  margin-top: 15px;
+}
+#secondary-menu {
+  position: absolute;
+  right: 0; /* LTR */
+  top: 0;
+  width: 480px;
+}
+#content,
+#sidebar-first,
+#sidebar-second,
+.region-triptych-first,
+.region-triptych-middle,
+.region-triptych-last,
+.region-footer-firstcolumn,
+.region-footer-secondcolumn,
+.region-footer-thirdcolumn,
+.region-footer-fourthcolumn {
+  display: inline;
+  float: left; /* LTR */
+  position: relative;
+}
+.one-sidebar #content {
+  width: 680px;
+}
+.two-sidebars #content {
+  width: 400px;
+}
+.no-sidebars #content {
+  width: 960px;
+  float: none;
+}
+#sidebar-first,
+#sidebar-second {
+  width: 280px;
+}
+#main-wrapper {
+  min-height: 300px;
+}
+#content .section,
+.sidebar .section {
+  padding: 0 15px;
+}
+#breadcrumb {
+  margin: 0 15px;
+}
+.region-triptych-first,
+.region-triptych-middle,
+.region-triptych-last {
+  margin: 20px 20px 30px;
+  width: 280px;
+}
+
+/* Our Animals Layout */
+.our-animals-animal {
+	width: 950px;
+    height: 255px;
+	border: 1px solid #888888;
+	background-color: #EDEDED;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
+
+.our-animals-title {
+	border-bottom: 1px dashed #888888;
+	padding-bottom: 2px;
+	text-align: center;
+	font-weight: bold;
+    font-size: larger;
+}
+
+.our-animals-thumbnail {
+    float: left;
+}
+
+.our-animals-thumbnail img {
+	padding-top: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    height: 200px;
+	width: 200px;
+}
+
+.our-animals-details {
+    padding-left: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    float: left;
+    width: 260px;
+}
+
+.our-animals-details-field {
+    padding-left: 5px;
+	padding-right: 5px;
+    padding-bottom: 5px;
+	font-size: 12;
+}
+
+.our-animals-description {
+    padding: 15px;
+    float: left;
+    width: 430px;
+}
+
+.our-animals-actions {
+    position: relative;
+    float: none;
+    margin-top: 170px;
+    width: 1000px;
+}
+
+.our-animals-action {
+    float: left;
+    margin-left: 18px;
+    margin-top: 10px;
+}
+
+.our-animals-banner-text {
+	background-color: rgba(237,237,237,0.85);
+	text-align: center;
+	font-weight: bold;
+	position: absolute;
+	margin-top: 190px;
+	color: #0000AA;
+    float: none;
+    width: 200px;
+    height: 25px;
+    padding-left: 15px;
+}
+
+.nav-link {
+    position: relative;
+    color: #FFFFFF;
+    float: right;
+    margin-top: -58px;
+}
+
+/* Animal profile layout */
+.animal-profile-header {
+	clear: both;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	padding-left: 5px;
+	background-color: #DFDFDF;
+	border-bottom: 1px dashed #AFAFAF;
+	font-size: 18px; 
+	font-weight: bold;
+}
+
+.animal-profile-field {
+	margin-top: 8px;
+	padding-left: 5px;
+}
+
+.animal-profile-label {
+	margin-top: 8px;
+	padding-left: 5px;
+	font-weight: bold;
+}
+
+.animal-profile-images {
+	text-align: center;
+	margin-top: 8px;
+}
+
+.animal-profile-youtube-field {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.animal-profile-applications {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.animal-profile-adoption-status {
+	font-style: oblique;
+	font-size: 15px;
+}
+
+.animal-profile-actions {
+    position: relative;
+    float: right;
+    top: -60px;
+}
+
+.animal-application-actions {
+    position: relative;
+    float: right;
+    top: -50px;
+}
+
+.animal-request-status {
+    padding-top: 10px;
+}
+
+.profile-status-header {
+    clear: both;
+    font-size: x-large;
+}
+
+.details-header {
+	margin-top: -10px;
+}
+
+.application-link {
+    margin: 5px;
+    float: left;
+}
+
+/* Animal spotlight layout */
+.animal-spotlight-title {
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+.animal-spotlight-thumbnail {
+	text-align: center;
+}
+
+.animal-spotlight-thumbnail  img{
+	width: 100px;
+	height: 85px;
+}
+
+.animal-spotlight-blurb {
+	height: 60px;
+    text-align: center;
+}
+
+.animal-spotlight-apply {
+    margin-left: 25px;
+}
+
+/* active fundraisers layout */
+.fundraiser-block-field {
+}
+
+.fundraiser-block-title {
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+.fundraiser-block-picture {
+	text-align: center;
+}
+
+.fundraiser-block-picture img {
+	width: 100px;
+	height: 85px;
+}
+
+.fundraiser-block-description {
+}
+
+.fundraiser-block-contribute-link {
+	text-align: center;
+	font-style: oblique;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.fundraiser-page-picture {
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.contribute-header {
+	margin-top: 15px;
+	margin-bottom: 20px;
+	padding-left: 5px;
+	background-color: #DFDFDF;
+	border-bottom: 1px dashed #AFAFAF;
+	font-size: 18px; 
+	font-weight: bold;
+}
+
+#contribute-options-block .contribute-option-line1 {
+	display: inline;
+}
+
+#contribute-options-block .contribute-option {
+	font-size: 15px;
+}
+
+#contribute-options-block  .cash-or-check {
+	float: left;
+	margin-left: 150px;
+}
+
+#contribute-options-block .crowdfunding {
+	float: right;
+	margin-right: 150px;
+}
+
+#contribute-options-block .paypal {
+	text-align: center;
+}
+
+/* animal management layout */
+.view-animal-management .view-content {
+	font-size: 13px;
+}
+
+.view-animal-management th {
+	text-align: center;
+}
+
+/* General view layout */
+.button-link {
+	background-color:#2a9c22;
+	border-radius: 20px;
+	border:1px solid #8b917f;
+	padding-bottom: 2px;
+	padding-top: 2px;
+	text-align:center;
+	text-indent:1.31px;
+	height:24px;
+    width: 150px;
+	text-shadow:1px 1px 0px #689324;
+}
+
+.button-link-narrow {
+    width: 75px;
+}
+
+.button-link a{
+	color: #FFFFFF;
+}
+
+.button-link a:hover {
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+.button-link:hover {
+	background-color:#147d0c;
+}
+
+.button-link a:active {
+	position:relative;
+	top:1px;
+}
+
+/* button-link disabled */
+.button-link-disabled {
+	background-color:#bdbdbd;
+	border-radius: 20px;
+	border:1px solid #8b917f;
+    color: #ffffff;
+	padding-bottom: 2px;
+	padding-top: 2px;
+	text-align:center;
+	text-indent:1.31px;
+	height:24px;
+    width: 150px;
+	text-shadow:1px 1px 0px #000000;
+}
+
+
+.view-empty {
+	font-size: 18px;
+	font-style: oblique;
+	margin-top: 30px;
+}
+
+.clear-row {
+	clear: both;
+}
+
+.view-filters {
+	font-size: 11px;
+}
+
+.editable-field .views-row-edit-static {
+    display: none;
+}
+
+.editable-field .form-required {
+    display: none;
+}
+
+/* success stories */
+
+.success-story-title {
+	font-size: 18px;
+	font-weight: bold;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 8px;
+	
+}
+
+.success-story-body {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.success-story-image {
+	float: left;
+	padding-left: 10px;
+	padding-right: 8px;
+	padding-bottom: 2px;
+}
+
+.view-success-stories{
+	background-color: #EEEEEE;
+}
+
+#views_slideshow_controls_text_pause_success_stories-page {
+	display: none;
+}
+
+#views_slideshow_controls_text_success_stories-page{
+	position: relative;
+	top: 28px;
+}
+
+#views_slideshow_controls_text_success_stories-page .views-slideshow-controls-text-previous {
+	padding: 8px;
+	margin-right: 15px;
+	font-weight: bold;
+	float: left;
+}
+
+#views_slideshow_controls_text_success_stories-page .views-slideshow-controls-text-next {
+	padding: 8px;
+	margin-left: 15px;
+	font-weight: bold;
+	float: right;
+}
+
+
+/* upcoming events block */
+.upcoming-event {
+	padding-bottom: 5px;
+}
+
+/* news-articles */
+.news-article {
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 8px;
+}
+
+.news-article-image {
+	float:left;
+	padding-right: 8px;
+	padding-bottom: 2px;
+}
+
+.news-article-title {
+	font-size: 18px;
+	font-weight: bold;
+	padding-top: 5px;
+	margin-top: 15px;
+}
+
+.news-article-posted {
+	font-size: 12px;
+	font-style: oblique;
+	margin-bottom: 8px;
+}
+
+.view-news .views-row-odd {
+	background-color: #EEEEEE;
+}
+
+/* Paypal donate block */
+
+.paypal-donate-block-text {
+	padding-bottom: 10px;
+}
+
+.paypal-donate-button {
+	text-align: center;
+}
+
+.contribute-via-paypal {
+	position: relative;
+	top: -10px;
+	text-align: center;
+}
+
+/* donate page */
+.accordion-panel {
+	height: 250px;
+}
+
+/* footer */
+#addthis_follow_buttons {
+	left: 790px;
+	position: relative;
+	top: -50px;
+}
+
+#addthis_follow_buttons .addthis_follow_text {
+	padding-bottom: 10px;
+}
+
+#footer-wrapper {
+  padding: 1px 5px 10px;
+}
+.region-footer-firstcolumn,
+.region-footer-secondcolumn,
+.region-footer-thirdcolumn,
+.region-footer-fourthcolumn {
+  padding: 0 10px;
+  width: 220px;
+}
+#footer {
+  width: 940px;
+  min-width: 920px;
+}

@@ -1,0 +1,244 @@
+<?php
+/**
+ * @file
+ * Code for the WOOF Applications feature.
+ */
+
+include_once 'woof_application_suite.features.inc';
+
+/**
+ * Implements hook_webform_submission_presave
+ *
+ * Prior to saving the application submission, do the following:
+ * 1) update the e-mail subject of the application
+ * 
+ */
+function woof_applications_webform_submission_presave($node, $submission) {
+    // only do this if the webform node is appropriate and the user is anonymous (not logged in)    
+    if ($node->nid == 115) {
+        $submitted_data = $submission->data;
+        
+        // configure the e-mail to be sent to the operations team
+        // get the applicant's name & the animal that is being applied for
+        $applicantName = $submitted_data[4]['value'][0];
+        $animalNode = node_load(intval($submission->data[40]['value'][0]));
+
+        // update the e-mail subject that is sent out to operations
+        $animalName = $animalNode->title;
+        $counselor = user_load($animalNode->field_counselor['und'][0]['uid']);
+        $counselorFirstName = $counselor->field_first_name['und'][0]['value'];
+        $counselorLastName = $counselor->field_last_name['und'][0]['value'];
+                
+        $emailSubject = 'An application has been submitted for ' . $animalName . ' by ' . 
+            $applicantName . ' (' . $counselorFirstName . ' ' . $counselorLastName . ')';
+            
+        $submission->data[108]['value'][0] = $emailSubject;
+    }
+}
+
+/**
+ * Implements hook_webform_submission_insert
+ * 
+ * Upon inserting a webform submission, perform custom logic to create the proper
+ * nodes for the Application and Animal-Application content types
+ *
+ */
+function woof_applications_webform_submission_insert($node, $submission) {
+    
+    // only do this if the webform node is appropriate
+    if ($node->nid == 115) {
+        
+        // get the animal that this application is for
+        $animal = node_load(intval($submission->data[40]['value'][0]));
+        
+        // continue only if the animal is valid
+        if ($animal) {
+            
+            // create a new node of type APPLICATION
+            $application = entity_create('node', array('type' => 'application'));
+            $application->uid = 1;
+            $applicationEntity = entity_metadata_wrapper('node', $application);
+
+            $applicationEntity->title = 'Application for ' . $animal->title;
+            $applicationEntity->field_submission_id = intval($submission->sid);
+            $applicationEntity->field_submission_date = time();
+            $applicationEntity->field_applicant_name = $submission->data[4]['value'][0];
+            $applicationEntity->field_applicant_email_address = $submission->data[104]['value'][0];
+            
+            // save it
+            $applicationEntity = $applicationEntity->save();
+            
+            // create a new node of ANIMAL_REQUEST using nid from above APPLICATION
+            // make this the primary animal
+            $animalRequest = entity_create('node', array('type' => 'animal_request'));
+            $animalRequest->uid = 1;
+            $animalRequestEntity = entity_metadata_wrapper('node', $animalRequest);
+            
+            $animalRequestEntity->title = 'Animal Request for ' . $animal->title;
+            $animalRequestEntity->field_application = $applicationEntity->getIdentifier();
+            $animalRequestEntity->field_animal = intval($animal->nid);
+            $animalRequestEntity->field_is_primary = TRUE;
+            
+            // save it
+            $animalRequestEntity->save();
+            $applicationEntity->field_requests[] = $animalRequestEntity->getIdentifier();
+            
+            // loop through the backup animals and create an ANIMAL_REQUEST for each
+            foreach ($submission->data[103]['value'] as $key => $value) {
+                
+                $backupAnimalRequest = entity_create('node', array('type' => 'animal_request'));
+                $backupAnimalRequest->uid = 1;
+                $backupAnimalRequestEntity = entity_metadata_wrapper('node', $backupAnimalRequest);
+
+                // load the backup animal
+                $backupAnimal = node_load(intval($value));
+                
+                $backupAnimalRequestEntity->title = 'Animal Request for ' . $backupAnimal->title;
+                $backupAnimalRequestEntity->field_application = $applicationEntity->getIdentifier();
+                $backupAnimalRequestEntity->field_animal = intval($backupAnimal->nid);
+                $backupAnimalRequestEntity->field_is_primary = FALSE;
+            
+                // save it
+                $backupAnimalRequestEntity->save();
+                $applicationEntity->field_requests[] = $backupAnimalRequestEntity->getIdentifier();
+            }
+            
+            // save the application after updating its requests
+            $applicationEntity->save();
+        }
+    }
+}
+
+/** 
+ * Implements hook_webform_validation_validators
+ *
+ * Add a custom validator to the list, to verify that the primary animal and the backup animals
+ * don't overlap.
+ *
+ */
+function woof_applications_webform_validation_validators() {
+    return array(
+        'animals_are_exclusive_validator' => array(
+            'name' => "Validate Unique Animals Chosen",
+            'component_types' => array(
+                'select'),
+            'min_components' => 2,
+            'max_components' => 2,
+            'description' => t('Validates that the two select fields are exclusive of each other')
+        )
+    );
+}
+
+/**
+ * Implements hook_webform_validation_validate
+ *
+ * Validate the select fields provided for the validate_animals_are_exclusive validator
+ * 
+ */
+function woof_applications_webform_validation_validate($validator_name, $items, $components, $rule) {
+    
+    if ($items) {
+    
+        switch ($validator_name) {
+            case 'animals_are_exclusive_validator':
+                // get the animals chosen
+                $primary_animal = $items['item_40'];
+                $backup_animals = $items['item_103'];
+                
+                // check if the backup animals contain the primary animal
+                foreach ($backup_animals as $animal) {
+                    
+                    if ($animal == $primary_animal) {
+                        // there was an overlap, so output an error
+                        $errors = array(
+                            'item_103' => 'Backup animals cannot be the same as the primary animal.',
+                            'item_40'  => 'Your primary animal cannot be the same as any of your backup animals.'
+                        );
+                        
+                        // break the loop if errors are found
+                        break;
+                    }
+                }
+                
+            break;                
+        }
+        
+        if (isset($errors)) {
+            
+            return $errors;
+        }
+    }
+}
+
+/**
+ * Checks the Request's status and updates the statusArray accordingly
+ */
+function GetRequestStatus(&$statusArray, $request) {
+    
+    // get the status of the passed in animal request variable
+    $requestStatus = taxonomy_term_load(intval($request->field_status['und'][0]['tid']));
+    
+    // check if the request status is pending, approved, or denied
+    if ($requestStatus->tid == '216') {
+        // Pending Review has tid of 216
+        $statusArray['pending'] += 1;
+    } else if ($requestStatus->tid == '218') {
+        // Approved has tid of 218
+        $statusArray['approved'] += 1;
+    } else if ($requestStatus->tid == '219') {
+        // Denied has tid of 219
+        $statusArray['denied'] += 1;
+    }
+}
+
+/**
+ * Implements hook_node_update
+ *
+ * For Animal Request nodes only, update the Application node with an overall status computed from it's requests
+ *
+ */
+function woof_applications_node_update($node) {
+
+    // check for whether the node is an Animal Request
+    if ($node->type == 'animal_request') {
+        
+        // initialize a counter array
+        $statusArray = array(
+            'pending'  => 0,
+            'approved' => 0,
+            'denied'   => 0,
+        );
+        
+        // find the application node, and derive the overall status of the application from its requests
+        $applicationNid = intval($node->field_application['und'][0]['nid']);
+        $applicationNode = node_load($applicationNid);
+        
+        // for the current request node, get it's status
+        GetRequestStatus($statusArray, $node);
+        
+        // for each request, check its current status and map it to the respective counters
+        foreach ($applicationNode->field_requests['und'] as $key => $request) {
+        
+            // loop over the other requests in the parent application and get their status as well
+            // only if the request is different from the current one being updated
+            $requestId = intval($request['nid']);
+            if ($node->nid <> $requestId) {
+                $requestNode = node_load($requestId);
+                
+                GetRequestStatus($statusArray, $requestNode);
+            }
+        }
+        
+        // evaluate the results and derive the overall status
+        if ($statusArray['approved'] >= 1) {
+            $applicationNode->field_application_status['und'][0]['tid'] = 218;
+        } else if ($statusArray['denied'] == 3) {
+            $applicationNode->field_application_status['und'][0]['tid'] = 219;
+        } else if ($statusArray['pending'] >= 1) {
+            $applicationNode->field_application_status['und'][0]['tid'] = 216;
+        }
+        
+        // save the application
+        node_save($applicationNode);
+    }
+}
