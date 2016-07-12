@@ -13,7 +13,7 @@ include_once 'woof_application_suite.features.inc';
  * 1) update the e-mail subject of the application
  * 
  */
-function woof_applications_webform_submission_presave($node, $submission) {
+function woof_application_suite_webform_submission_presave($node, $submission) {
     // only do this if the webform node is appropriate and the user is anonymous (not logged in)    
     if ($node->nid == 115) {
         $submitted_data = $submission->data;
@@ -43,7 +43,7 @@ function woof_applications_webform_submission_presave($node, $submission) {
  * nodes for the Application and Animal-Application content types
  *
  */
-function woof_applications_webform_submission_insert($node, $submission) {
+function woof_application_suite_webform_submission_insert($node, $submission) {
     
     // only do this if the webform node is appropriate
     if ($node->nid == 115) {
@@ -116,7 +116,7 @@ function woof_applications_webform_submission_insert($node, $submission) {
  * don't overlap.
  *
  */
-function woof_applications_webform_validation_validators() {
+function woof_application_suite_webform_validation_validators() {
     return array(
         'animals_are_exclusive_validator' => array(
             'name' => "Validate Unique Animals Chosen",
@@ -135,7 +135,7 @@ function woof_applications_webform_validation_validators() {
  * Validate the select fields provided for the validate_animals_are_exclusive validator
  * 
  */
-function woof_applications_webform_validation_validate($validator_name, $items, $components, $rule) {
+function woof_application_suite_webform_validation_validate($validator_name, $items, $components, $rule) {
     
     if ($items) {
     
@@ -197,7 +197,7 @@ function GetRequestStatus(&$statusArray, $request) {
  * For Animal Request nodes only, update the Application node with an overall status computed from it's requests
  *
  */
-function woof_applications_node_update($node) {
+function woof_application_suite_node_update($node) {
 
     // check for whether the node is an Animal Request
     if ($node->type == 'animal_request') {
