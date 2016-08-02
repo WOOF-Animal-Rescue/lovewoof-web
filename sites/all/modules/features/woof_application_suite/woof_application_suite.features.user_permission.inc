@@ -52,6 +52,15 @@ function woof_application_suite_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete terms in application_statuses'.
+  $permissions['delete terms in application_statuses'] = array(
+    'name' => 'delete terms in application_statuses',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'taxonomy',
+  );
+
   // Exported permission: 'edit any animal_request content'.
   $permissions['edit any animal_request content'] = array(
     'name' => 'edit any animal_request content',
@@ -84,6 +93,15 @@ function woof_application_suite_user_default_permissions() {
     'name' => 'edit own application content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: 'edit terms in application_statuses'.
+  $permissions['edit terms in application_statuses'] = array(
+    'name' => 'edit terms in application_statuses',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'taxonomy',
   );
 
   return $permissions;

@@ -341,7 +341,7 @@ function animal_management_suite_views_default_views() {
   $handler->display->display_options['fields']['view']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['view']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['view']['view'] = 'our_animals_details_links_subview';
-  $handler->display->display_options['fields']['view']['arguments'] = '[%field_rescue_id]';
+  $handler->display->display_options['fields']['view']['arguments'] = '[%nid]';
   /* Field: Name (hidden) */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -409,7 +409,7 @@ function animal_management_suite_views_default_views() {
   $handler->display->display_options['fields']['view_1']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['view_1']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['view_1']['view'] = 'our_animals_details_subview';
-  $handler->display->display_options['fields']['view_1']['arguments'] = '[%field_rescue_id]';
+  $handler->display->display_options['fields']['view_1']['arguments'] = '[%nid]';
   /* Field: Bio Header */
   $handler->display->display_options['fields']['nothing_1']['id'] = 'nothing_1';
   $handler->display->display_options['fields']['nothing_1']['table'] = 'views';
@@ -1053,6 +1053,213 @@ return true;';
   $export['dog_breeds'] = $view;
 
   $view = new view();
+  $view->name = 'manage_animals';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Manage Animals';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Manage Animals';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    7 => '7',
+  );
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'nid' => 'nid',
+    'nothing' => 'nothing',
+    'field_profile_picture' => 'field_profile_picture',
+    'title_1' => 'title_1',
+    'field_rescue_id' => 'field_rescue_id',
+    'view' => 'view',
+  );
+  $handler->display->display_options['style_options']['default'] = 'field_rescue_id';
+  $handler->display->display_options['style_options']['info'] = array(
+    'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'nothing' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_profile_picture' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_rescue_id' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'view' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Field: Node ID (hidden) */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['ui_name'] = 'Node ID (hidden)';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nid']['element_default_classes'] = FALSE;
+  /* Field: Edit Link */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['ui_name'] = 'Edit Link';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = 'Edit';
+  $handler->display->display_options['fields']['nothing']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nothing']['alter']['path'] = 'node/[nid]/edit';
+  $handler->display->display_options['fields']['nothing']['alter']['target'] = '_blank';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: Profile Picture */
+  $handler->display->display_options['fields']['field_profile_picture']['id'] = 'field_profile_picture';
+  $handler->display->display_options['fields']['field_profile_picture']['table'] = 'field_data_field_profile_picture';
+  $handler->display->display_options['fields']['field_profile_picture']['field'] = 'field_profile_picture';
+  $handler->display->display_options['fields']['field_profile_picture']['ui_name'] = 'Profile Picture';
+  $handler->display->display_options['fields']['field_profile_picture']['label'] = 'Thumbnail';
+  $handler->display->display_options['fields']['field_profile_picture']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_profile_picture']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_profile_picture']['settings'] = array(
+    'image_style' => 'thumbnail',
+    'image_link' => '',
+  );
+  /* Field: Animal Name */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['ui_name'] = 'Animal Name';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Name';
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
+  /* Field: Rescue ID */
+  $handler->display->display_options['fields']['field_rescue_id']['id'] = 'field_rescue_id';
+  $handler->display->display_options['fields']['field_rescue_id']['table'] = 'field_data_field_rescue_id';
+  $handler->display->display_options['fields']['field_rescue_id']['field'] = 'field_rescue_id';
+  $handler->display->display_options['fields']['field_rescue_id']['ui_name'] = 'Rescue ID';
+  $handler->display->display_options['fields']['field_rescue_id']['element_label_colon'] = FALSE;
+  /* Field: Animal Details */
+  $handler->display->display_options['fields']['view']['id'] = 'view';
+  $handler->display->display_options['fields']['view']['table'] = 'views';
+  $handler->display->display_options['fields']['view']['field'] = 'view';
+  $handler->display->display_options['fields']['view']['ui_name'] = 'Animal Details';
+  $handler->display->display_options['fields']['view']['label'] = 'Details';
+  $handler->display->display_options['fields']['view']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['view']['view'] = 'our_animals_details_subview';
+  $handler->display->display_options['fields']['view']['arguments'] = '[%nid]';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'animal' => 'animal',
+  );
+  /* Filter criterion: Animal Name Filter */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['ui_name'] = 'Animal Name Filter';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Search for a particular animal:';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
+  $handler->display->display_options['filters']['title']['group_info']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['group_info']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['title']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
+  /* Filter criterion: Rescue ID filter */
+  $handler->display->display_options['filters']['field_rescue_id_value']['id'] = 'field_rescue_id_value';
+  $handler->display->display_options['filters']['field_rescue_id_value']['table'] = 'field_data_field_rescue_id';
+  $handler->display->display_options['filters']['field_rescue_id_value']['field'] = 'field_rescue_id_value';
+  $handler->display->display_options['filters']['field_rescue_id_value']['ui_name'] = 'Rescue ID filter';
+  $handler->display->display_options['filters']['field_rescue_id_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rescue_id_value']['expose']['operator_id'] = 'rid-op';
+  $handler->display->display_options['filters']['field_rescue_id_value']['expose']['label'] = 'Filter on Rescue ID';
+  $handler->display->display_options['filters']['field_rescue_id_value']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['field_rescue_id_value']['expose']['operator_label'] = 'Rescue ID filter';
+  $handler->display->display_options['filters']['field_rescue_id_value']['expose']['operator'] = 'field_rescue_id_value_op';
+  $handler->display->display_options['filters']['field_rescue_id_value']['expose']['identifier'] = 'rid';
+  $handler->display->display_options['filters']['field_rescue_id_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    7 => 0,
+    8 => 0,
+  );
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['path'] = 'manage-animals';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Manage Animals';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'management';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $export['manage_animals'] = $view;
+
+  $view = new view();
   $view->name = 'our_animals';
   $view->description = '';
   $view->tag = 'default';
@@ -1385,7 +1592,7 @@ If you are interested in fostering, please use the <strong><a href="/contact">Co
   $handler->display->display_options['fields']['view']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['view']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['view']['view'] = 'our_animals_details_subview';
-  $handler->display->display_options['fields']['view']['arguments'] = '[%field_rescue_id]';
+  $handler->display->display_options['fields']['view']['arguments'] = '[%nid]';
   /* Field: Bio */
   $handler->display->display_options['fields']['field_bio']['id'] = 'field_bio';
   $handler->display->display_options['fields']['field_bio']['table'] = 'field_data_field_bio';
@@ -1430,7 +1637,7 @@ If you are interested in fostering, please use the <strong><a href="/contact">Co
   $handler->display->display_options['fields']['view_1']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['view_1']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['view_1']['view'] = 'our_animals_details_links_subview';
-  $handler->display->display_options['fields']['view_1']['arguments'] = '[%field_rescue_id]';
+  $handler->display->display_options['fields']['view_1']['arguments'] = '[%nid]';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Row Weight (field_row_weight) */
   $handler->display->display_options['sorts']['field_row_weight_value']['id'] = 'field_row_weight_value';
@@ -2020,16 +2227,16 @@ If you are interested in fostering, please use the <strong><a href="/contact">Co
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: Rescue ID (field_rescue_id) */
-  $handler->display->display_options['arguments']['field_rescue_id_value']['id'] = 'field_rescue_id_value';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['table'] = 'field_data_field_rescue_id';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['field'] = 'field_rescue_id_value';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['default_action'] = 'not found';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['exception']['value'] = '';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Node ID Contextual Filter */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['ui_name'] = 'Node ID Contextual Filter';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -2255,17 +2462,16 @@ If you are interested in fostering, please use the <strong><a href="/contact">Co
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Rescue ID Contextual Filter */
-  $handler->display->display_options['arguments']['field_rescue_id_value']['id'] = 'field_rescue_id_value';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['table'] = 'field_data_field_rescue_id';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['field'] = 'field_rescue_id_value';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['ui_name'] = 'Rescue ID Contextual Filter';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['default_action'] = 'not found';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['exception']['value'] = '';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_rescue_id_value']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Node ID Contextual Filter */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['ui_name'] = 'Node ID Contextual Filter';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
