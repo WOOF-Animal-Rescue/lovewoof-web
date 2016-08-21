@@ -232,7 +232,8 @@ body,
 
 .profile-status-header {
     clear: both;
-    font-size: x-large;
+    font-size: large;
+    padding-bottom: 10px;
 }
 
 .details-header {

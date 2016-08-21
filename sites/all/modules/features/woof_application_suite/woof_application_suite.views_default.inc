@@ -458,7 +458,7 @@ function woof_application_suite_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['style_plugin'] = 'editableviews_table';
+  $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'nid' => 'nid',
     'nid_1' => 'nid_1',
@@ -471,7 +471,7 @@ function woof_application_suite_views_default_views() {
     'field_application_status' => 'field_application_status',
     'nothing' => 'nothing',
   );
-  $handler->display->display_options['style_options']['default'] = 'field_submission_date';
+  $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'nid' => array(
       'sortable' => 0,
@@ -495,52 +495,51 @@ function woof_application_suite_views_default_views() {
     'field_submission_id' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => 'views-align-center',
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_submission_date' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'desc',
-      'align' => 'views-align-center',
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_applicant_name' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => 'views-align-left',
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_applicant_email_address' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => 'views-align-left',
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_status_editable' => array(
-      'sortable' => 1,
+      'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => 'views-align-center',
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_application_status' => array(
-      'sortable' => 1,
+      'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => 'views-align-center',
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'nothing' => array(
-      'align' => 'views-align-center',
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
   );
-  $handler->display->display_options['style_options']['batch_size'] = '10';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -629,26 +628,13 @@ function woof_application_suite_views_default_views() {
   $handler->display->display_options['fields']['field_applicant_email_address']['label'] = 'Applicant E-mail';
   $handler->display->display_options['fields']['field_applicant_email_address']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_applicant_email_address']['type'] = 'text_plain';
-  /* Field: Content: Status (editable) */
-  $handler->display->display_options['fields']['field_status_editable']['id'] = 'field_status_editable';
-  $handler->display->display_options['fields']['field_status_editable']['table'] = 'field_data_field_status';
-  $handler->display->display_options['fields']['field_status_editable']['field'] = 'field_status_editable';
-  $handler->display->display_options['fields']['field_status_editable']['label'] = 'Status';
-  $handler->display->display_options['fields']['field_status_editable']['element_type'] = 'div';
-  $handler->display->display_options['fields']['field_status_editable']['element_class'] = 'animal-request-status editable-field';
-  $handler->display->display_options['fields']['field_status_editable']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_status_editable']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['field_status_editable']['type'] = 'taxonomy_term_reference_plain';
-  $handler->display->display_options['fields']['field_status_editable']['widget_type'] = 'options_select';
-  $handler->display->display_options['fields']['field_status_editable']['suppress_label'] = 1;
-  $handler->display->display_options['fields']['field_status_editable']['suppress_description'] = 0;
-  /* Field: Content: Overall Status */
-  $handler->display->display_options['fields']['field_application_status']['id'] = 'field_application_status';
-  $handler->display->display_options['fields']['field_application_status']['table'] = 'field_data_field_application_status';
-  $handler->display->display_options['fields']['field_application_status']['field'] = 'field_application_status';
-  $handler->display->display_options['fields']['field_application_status']['relationship'] = 'field_application_nid';
-  $handler->display->display_options['fields']['field_application_status']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_application_status']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Request Status */
+  $handler->display->display_options['fields']['field_status']['id'] = 'field_status';
+  $handler->display->display_options['fields']['field_status']['table'] = 'field_data_field_status';
+  $handler->display->display_options['fields']['field_status']['field'] = 'field_status';
+  $handler->display->display_options['fields']['field_status']['ui_name'] = 'Request Status';
+  $handler->display->display_options['fields']['field_status']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_status']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Download PDF Link */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';

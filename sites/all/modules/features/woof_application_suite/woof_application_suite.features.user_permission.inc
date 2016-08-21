@@ -56,7 +56,7 @@ function woof_application_suite_user_default_permissions() {
   $permissions['delete terms in application_statuses'] = array(
     'name' => 'delete terms in application_statuses',
     'roles' => array(
-      'administrator' => 'administrator',
+      'Administrator' => 'Administrator',
     ),
     'module' => 'taxonomy',
   );
@@ -99,7 +99,7 @@ function woof_application_suite_user_default_permissions() {
   $permissions['edit terms in application_statuses'] = array(
     'name' => 'edit terms in application_statuses',
     'roles' => array(
-      'administrator' => 'administrator',
+      'Administrator' => 'Administrator',
     ),
     'module' => 'taxonomy',
   );

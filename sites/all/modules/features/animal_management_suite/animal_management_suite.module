@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Animal Management feature.
- */
-
-include_once 'animal_management_suite.features.inc';
