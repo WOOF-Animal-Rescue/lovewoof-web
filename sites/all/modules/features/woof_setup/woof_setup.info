@@ -1,0 +1,9 @@
+name = WOOF Website Options
+description = Provides setup options for the WOOF Animal Rescue website
+core = 7.x
+package = WOOF Features
+version = 7.x-1.0
+project = rescue_id_framework
+features[features_api][] = api:2
+project path = sites/all/modules/features
+configure = admin/config/system/woof-setup

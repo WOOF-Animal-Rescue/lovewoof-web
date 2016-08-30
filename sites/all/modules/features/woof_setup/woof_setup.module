@@ -1,0 +1,169 @@
+<?php
+/**
+ * WOOF Setup
+ */
+ 
+/**
+ * Implements hook_menu()
+ * 
+ * Creates the menu item for configuring the WOOF Animal Rescue Setup Options
+ */
+function woof_setup_menu() {
+	$items['admin/config/system/woof-setup'] = array(
+		'title' => 'WOOF Setup',
+		'description' => 'Configuration and setup for various functions for the WOOF website',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('setup_form'),
+		'access arguments' => array('administer content types'),
+		'type' => MENU_NORMAL_ITEM,
+	);
+	
+	return $items;
+}
+
+/**
+ * Implements hook_form_submit
+ * 
+ * Save settings from configuration page
+ */
+function woof_setup_form_submit($form, &$form_state) {
+	variable_set('current_rescue_id', $form_state['values'][current_rescue_id]);
+    variable_set('rescue_id_field', $form_state['values'][rescue_id_field]);
+}
+
+
+/**
+ * Implements hook_node_presave
+ * 
+ * When saving an animal, derive its Rescue ID and save it to the configured field.
+ */
+function woof_setup_node_insert($node) {
+    
+    if ($node->type == 'animal') {
+        
+        // register the callback to generate a new rescue id once the transaction has completed
+        register_shutdown_function('_generate_rescue_id', $node->nid);
+    }
+}
+
+/**
+ * Callback to update the Rescue ID
+ *
+ * Called after saving an animal for the first time
+ */
+function _generate_rescue_id($nid) {
+    
+    // get the node using node_load
+    $node = node_load($nid);
+    
+    // get the field name that contains the rescue id:
+    $rescueID_field = variable_get('rescue_id_field');
+    
+    // if the rescue ID hasn't been overridden, generate a new one
+    if (empty($node->{$rescueID_field})) {
+        
+        // acquire a lock so that multiple requests don't get the same rescue ID
+        if (lock_acquire('generate_new_rescue_id')) {
+            // initialize vars
+            $rescueIdPrefix = '';
+
+            // get the animal's adoption status and check if it has a rescue id override
+            $adoptionStatusId = $node->field_adoption_status['und'][0]['tid'];
+            $adoptionStatus = taxonomy_term_load($adoptionStatusId);
+            if (!empty($adoptionStatus->field_rescue_prefix)) {
+                // if not empty, then get the custom Rescue ID Prefix and the variable for its current rescue id seed
+
+                // get the custom rescue id prefix
+                $rescueIdPrefix = $adoptionStatus->field_rescue_prefix['und'][0]['value'];
+
+                // get the rescue id seed #
+                $rescueIdVariableName = 'current_rescue_id_for_status_' . $adoptionStatusId;
+                $currentRescueID = intval(variable_get($rescueIdVariableName));
+                if (empty($currentRescueID)) {
+                    $nextRescueID = intval('1');
+                    variable_set($rescueIdVariableName, '1');
+                } else {
+                    $nextRescueID = ++$currentRescueID;
+                }
+            } else {
+                // if the rescue_id_prefix is empty for the adoption status, default to the general scheme
+                // get the current rescue ID, and increase it by 1
+                $rescueIdVariableName = 'current_rescue_id';
+                $currentRescueID = intval(variable_get($rescueIdVariableName));
+                $nextRescueID = ++$currentRescueID;
+            }
+
+            // get the Rescue Id Prefix of the Field Type of this animal, otherwise default to 'D'
+            $animalTypeId = $node->field_type['und'][0]['tid'];
+            $animalTypeRescueIdPrefix = taxonomy_term_load($animalTypeId)->field_rescue_prefix['und'][0]['value'];
+            $rescueIdPrefix = $rescueIdPrefix . ( isset($animalTypeRescueIdPrefix) ? $animalTypeRescueIdPrefix : 'D' );
+
+            // calculate the new rescue ID based on the information collected
+            // Display padding on the computed rescue ID: 
+            // If less than 10, show '000' (i.e. D0001),
+            // else if greater than or equal to 10 and less than 100, show '00' (i.e. D0099), 
+            // else if greater than or equal to 100 AND less than 1000, show '0' (i.e. D0245), 
+            // else no padding at all (i.e. D1013)
+            $zero_padding = ( $nextRescueID < 10 ? '000' : ($nextRescueID >= 10 && $nextRescueID < 100 ? '00' : 
+                            ( $nextRescueID >= 100 && $nextRescueID < 1000 ? '0' : '' ) ) );
+
+            $nodeWrapper = entity_metadata_wrapper('node', $node);
+            $nodeWrapper->{$rescueID_field}->set($rescueIdPrefix . $zero_padding . $nextRescueID);
+            $nodeWrapper->save();
+
+            // set the new rescue ID
+            variable_set($rescueIdVariableName, $nextRescueID);
+
+            // release the lock
+            lock_release('generate_new_rescue_id');
+        }
+    }
+}
+
+/**
+ * Page callback: WOOF Setup Settings
+ *
+ * @see woof_setup_menu
+ */
+function setup_form($form, &$form_state) {
+    
+    $form['rescue_id_field'] = array(
+        '#type' => 'select',
+        '#title' => t('Which Animal field will store the rescue id?'),
+        '#default_value' => variable_get('rescue_id_field'),
+        '#options' => getAnimalFields(),
+        '#description' => t('Choose the Animal field which will hold the Rescue ID.')
+    );
+    
+    $form['current_rescue_id'] = array(
+		'#type' => 'textfield',
+		'#title' => t('What is the current Rescue ID?'),
+		'#default_value' => variable_get('current_rescue_id', 1),
+		'#size' => 6,
+		'#description' => t('The current Rescue ID being used by the system. The next animal added will get this number + 1, unless their initial adoption status has a Rescue ID override.'),
+		'#required' => TRUE,
+	);
+	
+	return system_settings_form($form);
+}
+
+
+/**
+ * getAnimalFields - returns an array of the Animal fields (machine names)
+ * 
+ * @see woof_setup_form
+ */
+function getAnimalFields() {
+    
+    // get the Animal fields
+    $animalFields = field_info_instances('node', 'animal');
+    
+    // build out the options array to return
+    $optionsArray = array();
+    
+    foreach ($animalFields as $key => $value) {
+        $optionsArray[$key] = $value['label'];
+    }
+    
+    return $optionsArray;
+}
